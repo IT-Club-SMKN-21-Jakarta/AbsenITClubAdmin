@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel • Absensi IT Club</title>
+
+    <!-- Font Awesome untuk Ikon (Mempercantik UI) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- CSS Utama & CSS Admin (Dipisah) -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Library ExcelJS (Tetap, bukan type module) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+</head>
+
+<body>
+    <div class="app-wrapper">
+        <header class="app-header">
+            <div class="header-content">
+                <i class="fas fa-laptop-code header-icon"></i>
+                <h1>Panel Admin <span>IT Club</span></h1>
+            </div>
+            <p class="header-subtitle">Kelola token absensi & unduh laporan kehadiran</p>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- Kartu: Manajemen Token -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <i class="fas fa-key card-icon"></i>
+                    <h3>Token Absensi Aktif</h3>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="tokenInput">
+                            <i class="fas fa-hashtag"></i> Kode Token
+                        </label>
+                        <input type="text" id="tokenInput" placeholder="Contoh: IT2026" value="IT2026">
+                        <small class="input-hint">Gunakan kombinasi huruf & angka unik</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="durationInput">
+                            <i class="far fa-clock"></i> Durasi Berlaku (Menit)
+                        </label>
+                        <input type="number" id="durationInput" value="15" min="1">
+                    </div>
+
+                    <button id="setTokenBtn" class="btn-primary btn-block">
+                        <i class="fas fa-sync-alt"></i> Perbarui Token Sekarang
+                    </button>
+                </div>
+                <div class="card-footer-note">
+                    <i class="fas fa-info-circle"></i> Token akan otomatis kadaluarsa sesuai durasi.
+                </div>
+            </div>
+
+            <!-- Kartu: Ekspor Data -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <i class="fas fa-file-excel card-icon"></i>
+                    <h3>Ekspor Rekap Absensi</h3>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="filterDate">
+                            <i class="far fa-calendar-alt"></i> Pilih Tanggal
+                        </label>
+                        <input type="date" id="filterDate">
+                    </div>
+
+                    <button id="exportAdminBtn" class="btn-secondary btn-block">
+                        <i class="fas fa-download"></i> Export ke Excel
+                    </button>
+                </div>
+                <div class="card-footer-note">
+                    <i class="fas fa-table"></i> File siap dicetak sebagai daftar hadir.
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>© 2026 IT Club Attendance System • Akses Admin</p>
+        </footer>
+    </div>
+
+    <!-- Script Module tetap dipertahankan sesuai permintaan -->
+    <script type="module" src="admin.js"></script>
+</body>
+
+</html>

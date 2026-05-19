@@ -1,0 +1,293 @@
+/* =============================================
+   ADMIN PANEL STYLES - IT CLUB
+   Dipisah dari struktur utama, tanpa modifikasi JS
+   ============================================= */
+
+/* Variabel Warna Modern */
+:root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --success: #06d6a0;
+    --success-dark: #05b384;
+    --danger: #ef476f;
+    --warning: #ffd166;
+    --dark: #1e293b;
+    --gray: #64748b;
+    --light-gray: #f8fafc;
+    --border-radius: 16px;
+    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    --transition: all 0.2s ease;
+}
+
+body {
+    background: #f1f5f9;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dark);
+}
+
+/* Wrapper Utama */
+.app-wrapper {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Header Aplikasi */
+.app-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.header-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    background: white;
+    padding: 12px;
+    border-radius: 18px;
+    box-shadow: var(--card-shadow);
+}
+
+.app-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--dark);
+    letter-spacing: -0.02em;
+}
+
+.app-header h1 span {
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.header-subtitle {
+    color: var(--gray);
+    margin-top: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Grid Dashboard */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+}
+
+/* Kartu Admin */
+.admin-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-card:hover {
+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.card-header {
+    padding: 20px 24px 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #eef2f6;
+}
+
+.card-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2ff;
+    color: var(--primary);
+    border-radius: 12px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark);
+    border-left: none;
+    padding-left: 0;
+}
+
+.card-body {
+    padding: 24px;
+    flex-grow: 1;
+}
+
+/* Input Groups */
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--gray);
+    margin-bottom: 8px;
+}
+
+.input-group label i {
+    margin-right: 6px;
+    color: var(--primary);
+    width: 18px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    background: var(--light-gray);
+    transition: var(--transition);
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+}
+
+.input-group input[type="date"] {
+    color: var(--dark);
+}
+
+.input-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-top: 6px;
+}
+
+/* Tombol */
+.btn-block {
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 6px -1px rgba(67, 97, 238, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: scale(1.01);
+    box-shadow: 0 8px 12px -4px rgba(67, 97, 238, 0.3);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--dark);
+    border: 1.5px solid #e2e8f0;
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--card-shadow);
+}
+
+.btn-secondary:hover {
+    background: var(--light-gray);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-secondary i {
+    color: var(--success);
+}
+
+/* Catatan Kaki Kartu */
+.card-footer-note {
+    background: #f8fafc;
+    padding: 12px 24px;
+    font-size: 0.85rem;
+    color: var(--gray);
+    border-top: 1px dashed #cbd5e1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-footer-note i {
+    color: var(--primary);
+}
+
+/* Footer Aplikasi */
+.app-footer {
+    margin-top: 48px;
+    text-align: center;
+    color: var(--gray);
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* Override untuk elemen yang sudah ada di styles.css (Jika bentrok) */
+.admin-section, hr, h3 {
+    /* Reset styling lama karena sudah tidak digunakan dalam struktur baru */
+    all: revert;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .app-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    body {
+        padding: 16px;
+    }
+}
