@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Absensi • IT Club</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --success: #06d6a0;
+            --danger: #ef476f;
+            --warning: #ffd166;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #f8fafc;
+            --border-radius: 16px;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            --transition: all 0.2s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f1f5f9;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            background: white;
+            padding: 12px;
+            border-radius: 18px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .header h1 span {
+            color: var(--primary);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .date-picker {
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(67, 97, 238, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: white;
+            border: 1.5px solid #e2e8f0;
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .auto-refresh {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .auto-refresh label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray);
+        }
+
+        .auto-refresh select {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.total {
+            background: #eef2ff;
+            color: var(--primary);
+        }
+
+        .stat-icon.hadir {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .stat-icon.belum {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #eef2f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h2 {
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 16px 10px 40px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            width: 250px;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8fafc;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-hadir {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-belum {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .ttd-preview {
+            width: 50px;
+            height: 30px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            object-fit: contain;
+            background: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .last-update {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .controls {
+                width: 100%;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th,
+            td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </a>
+                <i class="fas fa-chart-line header-icon"></i>
+                <h1>Monitor <span>Absensi</span></h1>
+            </div>
+
+            <div class="controls">
+                <input type="date" id="datePicker" class="date-picker">
+                <button onclick="refreshData()" class="btn btn-primary">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button onclick="exportCurrentView()" class="btn btn-outline">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+        </div>
+
+        <!-- Auto Refresh Control -->
+        <div style="margin-bottom: 20px;">
+            <div class="auto-refresh">
+                <i class="fas fa-clock"></i>
+                <label>Auto-refresh:</label>
+                <select id="refreshInterval" onchange="setAutoRefresh()">
+                    <option value="0">Manual</option>
+                    <option value="30">30 detik</option>
+                    <option value="60">1 menit</option>
+                    <option value="300" selected>5 menit</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalSiswa">0</h3>
+                    <p>Total Siswa</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon hadir">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalHadir">0</h3>
+                    <p>Sudah Absen</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon belum">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalBelum">0</h3>
+                    <p>Belum Absen</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e0e7ff; color: #4f46e5;">
+                    <i class="fas fa-percentage"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="persentase">0%</h3>
+                    <p>Kehadiran</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h2>
+                    <i class="fas fa-list-ul"></i>
+                    Daftar Absensi
+                </h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Cari nama atau kelas..." oninput="filterTable()">
+                </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Siswa</th>
+                            <th>Kelas</th>
+                            <th>Status</th>
+                            <th>Waktu Absen</th>
+                            <th>Tanda Tangan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="6">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                    <p style="margin-top: 15px; color: var(--gray);">Memuat data...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="last-update" id="lastUpdate">
+                Terakhir diperbarui: -
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            query,
+            where,
+            getDocs,
+            orderBy,
+            doc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA47cTihvHBnqYcn4HDlOKJf88O7MmzINo",
+            authDomain: "absenit-92dd9.firebaseapp.com",
+            projectId: "absenit-92dd9",
+            storageBucket: "absenit-92dd9.firebasestorage.app",
+            messagingSenderId: "219381976986",
+            appId: "1:219381976986:web:7f1ac4bd70470a52e63423"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let allData = [];
+        let autoRefreshInterval;
+        let daftarSiswa = [];
+
+        // Set tanggal hari ini sebagai default
+        document.getElementById('datePicker').valueAsDate = new Date();
+
+        // Load daftar siswa dari template
+        async function loadDaftarSiswa() {
+            try {
+                const response = await fetch('assets/TemplateAbsensi.xlsx');
+                const arrayBuffer = await response.arrayBuffer();
+                const workbook = new ExcelJS.Workbook();
+                await workbook.xlsx.load(arrayBuffer);
+                const worksheet = workbook.getWorksheet(1);
+
+                daftarSiswa = [];
+                worksheet.eachRow((row, rowNumber) => {
+                    if (rowNumber >= 5) {
+                        const nama = row.getCell(2).text.trim();
+                        const kelas = row.getCell(3).text.trim();
+                        if (nama && kelas) {
+                            daftarSiswa.push({ nama, kelas });
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Gagal load daftar siswa:', error);
+            }
+        }
+
+        // Fungsi utama untuk refresh data
+        async function refreshData() {
+            const tanggalInput = document.getElementById('datePicker').value;
+            if (!tanggalInput) return;
+
+            const start = new Date(tanggalInput);
+            start.setHours(0, 0, 0, 0);
+            const end = new Date(tanggalInput);
+            end.setHours(23, 59, 59, 999);
+
+            // Pastikan daftar siswa sudah diload
+            if (daftarSiswa.length === 0) {
+                await loadDaftarSiswa();
+            }
+
+            // Ambil data presensi dari Firebase
+            const q = query(
+                collection(db, "presensi"),
+                where("timestamp", ">=", start),
+                where("timestamp", "<=", end),
+                orderBy("timestamp", "asc")
+            );
+
+            try {
+                const querySnapshot = await getDocs(q);
+                const presensiMap = {};
+
+                querySnapshot.forEach((doc) => {
+                    const d = doc.data();
+                    presensiMap[`${d.nama}-${d.kelas}`] = {
+                        timestamp: d.timestamp?.toDate() || new Date(),
+                        ttd: d.ttd || null
+                    };
+                });
+
+                // Gabungkan dengan daftar siswa
+                allData = daftarSiswa.map((siswa, index) => {
+                    const key = `${siswa.nama}-${siswa.kelas}`;
+                    const presensi = presensiMap[key];
+
+                    return {
+                        no: index + 1,
+                        nama: siswa.nama,
+                        kelas: siswa.kelas,
+                        hadir: !!presensi,
+                        waktu: presensi ? presensi.timestamp : null,
+                        ttd: presensi ? presensi.ttd : null
+                    };
+                });
+
+                updateTable(allData);
+                updateStats();
+                updateLastRefresh();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('tableBody').innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p>Gagal memuat data. Silakan coba lagi.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function updateTable(data) {
+            const tbody = document.getElementById('tableBody');
+
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>Tidak ada data untuk ditampilkan</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = data.map(item => `
+                <tr style="${item.hadir ? '' : 'background: #fffbeb;'}">
+                    <td>${item.no}</td>
+                    <td><strong>${item.nama}</strong></td>
+                    <td>${item.kelas}</td>
+                    <td>
+                        <span class="status-badge ${item.hadir ? 'status-hadir' : 'status-belum'}">
+                            <i class="fas ${item.hadir ? 'fa-check-circle' : 'fa-clock'}"></i>
+                            ${item.hadir ? 'Hadir' : 'Belum Absen'}
+                        </span>
+                    </td>
+                    <td>${item.waktu ? formatTime(item.waktu) : '-'}</td>
+                    <td>
+                        ${item.ttd ?
+                    `<img src="${item.ttd}" class="ttd-preview" alt="TTD" title="Tanda tangan ${item.nama}">` :
+                    '<span style="color: #94a3b8;">-</span>'
+                }
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateStats() {
+            const total = allData.length;
+            const hadir = allData.filter(d => d.hadir).length;
+            const belum = total - hadir;
+            const persentase = total > 0 ? Math.round((hadir / total) * 100) : 0;
+
+            document.getElementById('totalSiswa').textContent = total;
+            document.getElementById('totalHadir').textContent = hadir;
+            document.getElementById('totalBelum').textContent = belum;
+            document.getElementById('persentase').textContent = persentase + '%';
+        }
+
+        function updateLastRefresh() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent =
+                `Terakhir diperbarui: ${formatTime(now)}`;
+        }
+
+        function filterTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allData.filter(item =>
+                item.nama.toLowerCase().includes(searchTerm) ||
+                item.kelas.toLowerCase().includes(searchTerm)
+            );
+            updateTable(filtered);
+        }
+
+        function formatTime(date) {
+            return date.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        function setAutoRefresh() {
+            const interval = parseInt(document.getElementById('refreshInterval').value);
+
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+
+            if (interval > 0) {
+                autoRefreshInterval = setInterval(refreshData, interval * 1000);
+            }
+        }
+
+        async function exportCurrentView() {
+            if (allData.length === 0) {
+                alert('Tidak ada data untuk diexport!');
+                return;
+            }
+
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Monitoring Absensi');
+
+            // Header
+            worksheet.columns = [
+                { header: 'No', key: 'no', width: 8 },
+                { header: 'Nama Siswa', key: 'nama', width: 30 },
+                { header: 'Kelas', key: 'kelas', width: 15 },
+                { header: 'Status', key: 'status', width: 15 },
+                { header: 'Waktu Absen', key: 'waktu', width: 20 }
+            ];
+
+            // Styling header
+            worksheet.getRow(1).font = { bold: true };
+            worksheet.getRow(1).fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FF4361EE' }
+            };
+            worksheet.getRow(1).font = { color: { argb: 'FFFFFFFF' }, bold: true };
+
+            // Data
+            allData.forEach(item => {
+                worksheet.addRow({
+                    no: item.no,
+                    nama: item.nama,
+                    kelas: item.kelas,
+                    status: item.hadir ? 'Hadir' : 'Belum Absen',
+                    waktu: item.waktu ? formatTime(item.waktu) : '-'
+                });
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Monitoring_Absen_${document.getElementById('datePicker').value}.xlsx`;
+            a.click();
+        }
+
+        // Inisialisasi
+        loadDaftarSiswa().then(() => {
+            refreshData();
+            setAutoRefresh(); // Aktifkan auto-refresh default 5 menit
+        });
+
+        // Expose functions to global scope
+        window.refreshData = refreshData;
+        window.filterTable = filterTable;
+        window.setAutoRefresh = setAutoRefresh;
+        window.exportCurrentView = exportCurrentView;
+    </script>
+</body>
+
+</html>
