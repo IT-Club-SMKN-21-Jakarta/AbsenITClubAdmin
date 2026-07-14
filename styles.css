@@ -1,30 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&display=swap');
+
 /* =============================================
-   ADMIN PANEL STYLES - IT CLUB
-   Dipisah dari struktur utama, tanpa modifikasi JS
+   GLASSMORPHISM X NEO-BRUTALISM ADMIN PANEL
+   Absensi IT Club • Admin Redesign
    ============================================= */
 
-/* Variabel Warna Modern */
 :root {
-    --primary: #4361ee;
-    --primary-dark: #3a56d4;
-    --success: #06d6a0;
-    --success-dark: #05b384;
-    --danger: #ef476f;
-    --warning: #ffd166;
-    --dark: #1e293b;
-    --gray: #64748b;
-    --light-gray: #f8fafc;
-    --border-radius: 16px;
-    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
-    --transition: all 0.2s ease;
+    --primary: #a78bfa;
+    --primary-glow: rgba(167, 139, 250, 0.85);
+    --success: #34d399;
+    --success-glow: rgba(52, 211, 153, 0.85);
+    --danger: #f87171;
+    --dark: #000000;
+    --bg-page: #e0f2fe;
+    
+    /* Neo-Brutalism Shadows */
+    --neo-shadow: 10px 10px 0px #000000;
+    --neo-shadow-btn: 5px 5px 0px #000000;
+    
+    --transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* === RESET === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    background: #f1f5f9;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    margin: 0;
-    padding: 20px;
+    font-family: 'Lexend', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-page);
+    /* Vibrant mesh gradient in background to highlight the glass blur */
+    background-image: 
+        radial-gradient(at 10% 20%, rgba(167, 139, 250, 0.45) 0px, transparent 50%), 
+        radial-gradient(at 90% 10%, rgba(244, 63, 94, 0.35) 0px, transparent 50%), 
+        radial-gradient(at 50% 80%, rgba(56, 189, 248, 0.45) 0px, transparent 50%),
+        radial-gradient(at 80% 90%, rgba(253, 224, 71, 0.35) 0px, transparent 50%);
+    background-size: cover;
+    background-attachment: fixed;
     min-height: 100vh;
+    padding: 32px 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -33,7 +49,7 @@ body {
 
 /* Wrapper Utama */
 .app-wrapper {
-    max-width: 1000px;
+    max-width: 900px;
     width: 100%;
     margin: 0 auto;
 }
@@ -41,43 +57,58 @@ body {
 /* Header Aplikasi */
 .app-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 36px;
 }
 
 .header-content {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 16px;
 }
 
 .header-icon {
-    font-size: 2.5rem;
-    color: var(--primary);
-    background: white;
+    font-size: 32px;
+    color: var(--dark);
+    background: rgba(167, 139, 250, 0.55);
+    backdrop-filter: blur(5px);
+    border: 3.5px solid var(--dark);
     padding: 12px;
-    border-radius: 18px;
-    box-shadow: var(--card-shadow);
+    border-radius: 20px;
+    box-shadow: 4px 4px 0px var(--dark);
 }
 
 .app-header h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin: 0;
+    font-size: 32px;
+    font-weight: 900;
     color: var(--dark);
-    letter-spacing: -0.02em;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
 }
 
 .app-header h1 span {
-    color: var(--primary);
-    font-weight: 800;
+    background: rgba(253, 224, 71, 0.85); /* Glass yellow */
+    backdrop-filter: blur(4px);
+    padding: 2px 10px;
+    border: 2.5px solid var(--dark);
+    border-radius: 12px;
+    box-shadow: 2px 2px 0px var(--dark);
+    color: var(--dark);
 }
 
 .header-subtitle {
-    color: var(--gray);
-    margin-top: 8px;
-    font-size: 1rem;
-    font-weight: 500;
+    display: inline-block;
+    color: var(--dark);
+    margin-top: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(8px);
+    padding: 6px 16px;
+    border: 2.5px solid var(--dark);
+    border-radius: 12px;
+    box-shadow: 3px 3px 0px var(--dark);
 }
 
 /* Grid Dashboard */
@@ -89,104 +120,103 @@ body {
 
 /* Kartu Admin */
 .admin-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-radius: var(--border-radius);
-    box-shadow: var(--card-shadow);
-    overflow: hidden;
-    transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(2px);
+    border: 3.5px solid var(--dark);
+    box-shadow: var(--neo-shadow);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    transition: var(--transition);
 }
 
 .admin-card:hover {
-    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.1);
-    transform: translateY(-3px);
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0px var(--dark);
 }
 
 .card-header {
-    padding: 20px 24px 12px 24px;
+    padding: 20px 24px;
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid #eef2f6;
+    border-bottom: 3.5px solid var(--dark);
+    background: rgba(254, 240, 138, 0.7); /* Yellow glass card header */
+    backdrop-filter: blur(4px);
 }
 
 .card-icon {
-    font-size: 1.5rem;
-    width: 40px;
-    height: 40px;
+    font-size: 20px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #eef2ff;
-    color: var(--primary);
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--dark);
     border-radius: 12px;
+    border: 2.5px solid var(--dark);
+    box-shadow: 2px 2px 0px var(--dark);
 }
 
 .card-header h3 {
     margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 900;
     color: var(--dark);
-    border-left: none;
-    padding-left: 0;
+    text-transform: uppercase;
 }
 
 .card-body {
     padding: 24px;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Input Groups */
 .input-group {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .input-group label {
     display: block;
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
-    color: var(--gray);
+    color: var(--dark);
     margin-bottom: 8px;
 }
 
 .input-group label i {
     margin-right: 6px;
-    color: var(--primary);
-    width: 18px;
 }
 
 .input-group input {
     width: 100%;
-    padding: 14px 16px;
-    font-size: 1rem;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 12px;
-    background: var(--light-gray);
+    padding: 13px 16px;
+    font-size: 15px;
+    font-weight: 700;
+    border: 2.5px solid var(--dark);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.7);
     transition: var(--transition);
-    box-sizing: border-box;
-    font-family: inherit;
 }
 
 .input-group input:focus {
     outline: none;
-    border-color: var(--primary);
-    background: white;
-    box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
-}
-
-.input-group input[type="date"] {
-    color: var(--dark);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 3px 3px 0px var(--primary);
 }
 
 .input-hint {
     display: block;
-    font-size: 0.8rem;
-    color: var(--gray);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dark);
     margin-top: 6px;
 }
 
@@ -196,83 +226,86 @@ body {
     justify-content: center;
 }
 
-.btn-primary {
-    background: var(--primary);
-    color: white;
-    border: none;
+.btn-primary,
+.btn-secondary {
     padding: 14px 20px;
-    font-weight: 600;
-    font-size: 1rem;
-    border-radius: 12px;
+    font-weight: 900;
+    font-size: 15px;
+    border: 3.5px solid var(--dark);
+    border-radius: 16px;
     cursor: pointer;
     transition: var(--transition);
     display: flex;
     align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 6px -1px rgba(67, 97, 238, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 8px;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background: var(--primary-glow);
+    backdrop-filter: blur(4px);
+    color: var(--dark);
+    box-shadow: var(--neo-shadow-btn);
 }
 
 .btn-primary:hover {
-    background: var(--primary-dark);
-    transform: scale(1.01);
-    box-shadow: 0 8px 12px -4px rgba(67, 97, 238, 0.3);
+    background: rgba(192, 132, 252, 0.95);
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 6.5px 6.5px 0px var(--dark);
+}
+
+.btn-primary:active {
+    transform: translate(5px, 5px);
+    box-shadow: 0px 0px 0px var(--dark);
 }
 
 .btn-secondary {
-    background: white;
+    background: var(--success-glow);
+    backdrop-filter: blur(4px);
     color: var(--dark);
-    border: 1.5px solid #e2e8f0;
-    padding: 14px 20px;
-    font-weight: 600;
-    font-size: 1rem;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: var(--card-shadow);
+    box-shadow: var(--neo-shadow-btn);
 }
 
 .btn-secondary:hover {
-    background: var(--light-gray);
-    border-color: var(--primary);
-    color: var(--primary);
+    background: rgba(110, 231, 183, 0.95);
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 6.5px 6.5px 0px var(--dark);
 }
 
-.btn-secondary i {
-    color: var(--success);
+.btn-secondary:active {
+    transform: translate(5px, 5px);
+    box-shadow: 0px 0px 0px var(--dark);
 }
 
 /* Catatan Kaki Kartu */
 .card-footer-note {
-    background: #f8fafc;
-    padding: 12px 24px;
-    font-size: 0.85rem;
-    color: var(--gray);
-    border-top: 1px dashed #cbd5e1;
+    background: rgba(250, 250, 250, 0.45);
+    backdrop-filter: blur(4px);
+    padding: 14px 24px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark);
+    border-top: 3.5px dashed var(--dark);
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
 .card-footer-note i {
-    color: var(--primary);
+    color: #7c3aed;
 }
 
 /* Footer Aplikasi */
 .app-footer {
     margin-top: 48px;
     text-align: center;
-    color: var(--gray);
-    font-size: 0.85rem;
-    opacity: 0.8;
+    color: var(--dark);
+    font-size: 13px;
+    font-weight: 700;
 }
 
-/* Override untuk elemen yang sudah ada di styles.css (Jika bentrok) */
+/* Reset revert properties */
 .admin-section, hr, h3 {
-    /* Reset styling lama karena sudah tidak digunakan dalam struktur baru */
     all: revert;
 }
 
@@ -280,14 +313,14 @@ body {
 @media (max-width: 700px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 24px;
     }
     
     .app-header h1 {
-        font-size: 1.8rem;
+        font-size: 26px;
     }
     
     body {
-        padding: 16px;
+        padding: 24px 12px;
     }
 }
