@@ -13,15 +13,18 @@
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800;900&display=swap');
 
         :root {
-            --primary: #a78bfa;
-            --primary-glow: rgba(167, 139, 250, 0.85);
-            --success: #34d399;
-            --success-glow: rgba(52, 211, 153, 0.85);
-            --danger: #f87171;
-            --danger-glow: rgba(248, 113, 113, 0.85);
-            --warning: #fde047;
-            --dark: #000000;
-            --bg-page: #e0f2fe;
+            /* Brand Colors from Logo */
+            --brand-orange: #f68b1f;      /* Vibrant Orange */
+            --brand-dark: #2d2438;        /* Deep Purple-Black */
+            --brand-light: #ffffff;
+            --brand-bg: #f5f4f2;          /* Warm soft gray-white */
+            --brand-gray: #7a7285;        /* Neutral Slate Gray */
+            --brand-accent: #fdf6ee;      /* Very soft warm tint */
+            
+            --border-width: 3px;
+            --neo-shadow: 8px 8px 0px var(--brand-dark);
+            --neo-shadow-btn: 4px 4px 0px var(--brand-dark);
+            
             --transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -33,17 +36,16 @@
 
         body {
             font-family: 'Lexend', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-page);
+            background-color: var(--brand-bg);
+            /* Double-circle watermark pattern in the background */
             background-image: 
-                radial-gradient(at 10% 20%, rgba(167, 139, 250, 0.45) 0px, transparent 50%), 
-                radial-gradient(at 90% 10%, rgba(244, 63, 94, 0.35) 0px, transparent 50%), 
-                radial-gradient(at 50% 80%, rgba(56, 189, 248, 0.45) 0px, transparent 50%),
-                radial-gradient(at 80% 90%, rgba(253, 224, 71, 0.35) 0px, transparent 50%);
-            background-size: cover;
-            background-attachment: fixed;
+                radial-gradient(circle, transparent 20%, var(--brand-bg) 20%, var(--brand-bg) 80%, transparent 80%, transparent),
+                radial-gradient(circle, transparent 20%, var(--brand-bg) 20%, var(--brand-bg) 80%, transparent 80%, transparent);
+            background-size: 80px 80px;
+            background-position: 0 0, 40px 40px;
             min-height: 100vh;
-            padding: 32px 16px;
-            color: var(--dark);
+            padding: 40px 16px;
+            color: var(--brand-dark);
         }
 
         .container {
@@ -68,15 +70,14 @@
         }
 
         .back-btn {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(4px);
-            border: 3px solid var(--dark);
+            background: var(--brand-light);
+            border: 2.5px solid var(--brand-dark);
             padding: 12px 20px;
-            border-radius: 16px;
+            border-radius: 9999px; /* Pill Shape */
             cursor: pointer;
             font-weight: 800;
-            color: var(--dark);
-            box-shadow: 4px 4px 0px var(--dark);
+            color: var(--brand-dark);
+            box-shadow: var(--neo-shadow-btn);
             transition: var(--transition);
             text-decoration: none;
             display: inline-flex;
@@ -87,25 +88,26 @@
         }
 
         .back-btn:hover {
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--brand-accent);
             transform: translate(-1.5px, -1.5px);
-            box-shadow: 5.5px 5.5px 0px var(--dark);
+            box-shadow: 5.5px 5.5px 0px var(--brand-dark);
         }
 
         .back-btn:active {
             transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px var(--dark);
+            box-shadow: 0px 0px 0px var(--brand-dark);
         }
 
         .header-icon {
-            font-size: 32px;
-            color: var(--dark);
-            background: rgba(167, 139, 250, 0.55);
-            backdrop-filter: blur(5px);
-            border: 3.5px solid var(--dark);
+            font-size: 28px;
+            color: var(--brand-orange);
+            background: var(--brand-light);
+            border: 2.5px solid var(--brand-dark);
+            outline: 1.5px solid var(--brand-dark);
+            outline-offset: 3px;
             padding: 12px;
-            border-radius: 20px;
-            box-shadow: 4px 4px 0px var(--dark);
+            border-radius: 50%;
+            box-shadow: 3px 3px 0px var(--brand-dark);
         }
 
         .header h1 {
@@ -115,11 +117,12 @@
         }
 
         .header h1 span {
-            background: rgba(253, 224, 71, 0.85);
+            background: var(--brand-orange);
+            color: var(--brand-light);
             padding: 2px 10px;
-            border: 2.5px solid var(--dark);
-            border-radius: 12px;
-            box-shadow: 2px 2px 0px var(--dark);
+            border: 2.5px solid var(--brand-dark);
+            border-radius: 9999px;
+            box-shadow: 2px 2px 0px var(--brand-dark);
         }
 
         /* Controls */
@@ -131,95 +134,93 @@
         }
 
         .date-picker {
-            padding: 12px 16px;
-            border: 3px solid var(--dark);
-            border-radius: 16px;
+            padding: 12px 18px;
+            border: 2.5px solid var(--brand-dark);
+            border-radius: 9999px; /* Pill Shape */
             font-size: 14px;
             font-weight: 700;
             font-family: inherit;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--brand-light);
+            color: var(--brand-dark);
             cursor: pointer;
             transition: var(--transition);
         }
 
         .date-picker:focus {
             outline: none;
-            box-shadow: 3px 3px 0px var(--primary);
+            box-shadow: 3px 3px 0px var(--brand-orange);
         }
 
         .btn {
             padding: 12px 24px;
-            border-radius: 16px;
-            border: 3px solid var(--dark);
-            font-weight: 800;
+            border-radius: 9999px; /* Pill Shape */
+            border: var(--border-width) solid var(--brand-dark);
+            font-weight: 900;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
         }
 
         .btn-primary {
-            background: var(--primary-glow);
-            backdrop-filter: blur(4px);
-            color: var(--dark);
-            box-shadow: 4px 4px 0px var(--dark);
+            background: var(--brand-orange);
+            color: var(--brand-light);
+            box-shadow: var(--neo-shadow-btn);
         }
 
         .btn-primary:hover {
-            background: rgba(192, 132, 252, 0.95);
+            background: #f97316;
             transform: translate(-1.5px, -1.5px);
-            box-shadow: 5.5px 5.5px 0px var(--dark);
+            box-shadow: 5.5px 5.5px 0px var(--brand-dark);
         }
 
         .btn-primary:active {
             transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px var(--dark);
+            box-shadow: 0px 0px 0px var(--brand-dark);
         }
 
         .btn-outline {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(4px);
-            color: var(--dark);
-            box-shadow: 4px 4px 0px var(--dark);
+            background: var(--brand-light);
+            color: var(--brand-dark);
+            box-shadow: var(--neo-shadow-btn);
         }
 
         .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--brand-accent);
             transform: translate(-1.5px, -1.5px);
-            box-shadow: 5.5px 5.5px 0px var(--dark);
+            box-shadow: 5.5px 5.5px 0px var(--brand-dark);
         }
 
         .btn-outline:active {
             transform: translate(4px, 4px);
-            box-shadow: 0px 0px 0px var(--dark);
+            box-shadow: 0px 0px 0px var(--brand-dark);
         }
 
         .auto-refresh {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 16px;
-            background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(4px);
-            border-radius: 16px;
-            border: 3px solid var(--dark);
-            box-shadow: 4px 4px 0px var(--dark);
+            padding: 10px 20px;
+            background: var(--brand-light);
+            border-radius: 9999px; /* Pill Shape */
+            border: 2.5px solid var(--brand-dark);
+            box-shadow: var(--neo-shadow-btn);
         }
 
         .auto-refresh label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
-            color: var(--dark);
+            color: var(--brand-dark);
         }
 
         .auto-refresh select {
-            border: 2px solid var(--dark);
+            border: 2px solid var(--brand-dark);
             border-radius: 8px;
-            padding: 6px 10px;
+            padding: 4px 10px;
             font-family: inherit;
             font-weight: 700;
             cursor: pointer;
@@ -235,42 +236,41 @@
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(16px);
+            background: var(--brand-light);
             padding: 20px;
-            border-radius: 20px;
-            border: 3.5px solid var(--dark);
-            box-shadow: 6px 6px 0px var(--dark);
+            border-radius: 24px;
+            border: var(--border-width) solid var(--brand-dark);
+            box-shadow: var(--neo-shadow-btn);
             display: flex;
             align-items: center;
             gap: 16px;
         }
 
         .stat-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%; /* Circle logo motif */
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            border: 2.5px solid var(--dark);
-            box-shadow: 2px 2px 0px var(--dark);
+            font-size: 18px;
+            border: 2px solid var(--brand-dark);
+            box-shadow: 2px 2px 0px var(--brand-dark);
         }
 
         .stat-icon.total {
-            background: rgba(167, 139, 250, 0.65);
-            color: var(--dark);
+            background: var(--brand-accent);
+            color: var(--brand-dark);
         }
 
         .stat-icon.hadir {
-            background: rgba(52, 211, 153, 0.65);
-            color: var(--dark);
+            background: #d1fae5;
+            color: #065f46;
         }
 
         .stat-icon.belum {
-            background: rgba(253, 224, 71, 0.65);
-            color: var(--dark);
+            background: #fef3c7;
+            color: #92400e;
         }
 
         .stat-info h3 {
@@ -280,27 +280,29 @@
         }
 
         .stat-info p {
-            color: var(--dark);
-            font-size: 12px;
-            font-weight: 700;
+            color: var(--brand-gray);
+            font-size: 11px;
+            font-weight: 800;
             text-transform: uppercase;
         }
 
         /* Table Container */
         .table-container {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(16px);
+            background: var(--brand-light);
             border-radius: 24px;
-            border: 3.5px solid var(--dark);
+            border: var(--border-width) solid var(--brand-dark);
+            /* Double outline effect */
+            outline: 2px solid var(--brand-dark);
+            outline-offset: 4px;
             box-shadow: var(--neo-shadow);
             overflow: hidden;
+            margin: 6px;
         }
 
         .table-header {
             padding: 20px 24px;
-            border-bottom: 3.5px solid var(--dark);
-            background: rgba(254, 240, 138, 0.7);
-            backdrop-filter: blur(4px);
+            border-bottom: var(--border-width) solid var(--brand-dark);
+            background: var(--brand-accent);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -309,7 +311,7 @@
         }
 
         .table-header h2 {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 900;
             text-transform: uppercase;
             display: flex;
@@ -323,28 +325,28 @@
 
         .search-box input {
             padding: 10px 16px 10px 40px;
-            border: 2.5px solid var(--dark);
-            border-radius: 12px;
-            font-size: 14px;
+            border: 2.5px solid var(--brand-dark);
+            border-radius: 9999px; /* Pill Shape */
+            font-size: 13px;
             font-weight: 700;
             width: 250px;
             font-family: inherit;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--brand-light);
+            color: var(--brand-dark);
             transition: var(--transition);
         }
 
         .search-box input:focus {
             outline: none;
-            background: white;
-            box-shadow: 3px 3px 0px var(--primary);
+            box-shadow: 3px 3px 0px var(--brand-orange);
         }
 
         .search-box i {
             position: absolute;
-            left: 14px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--dark);
+            color: var(--brand-dark);
         }
 
         table {
@@ -353,70 +355,71 @@
         }
 
         thead {
-            background: rgba(241, 245, 249, 0.6);
-            border-bottom: 2.5px solid var(--dark);
+            background: #faf9f6;
+            border-bottom: 2.5px solid var(--brand-dark);
         }
 
         th {
             padding: 16px;
             text-align: left;
             font-weight: 800;
-            color: var(--dark);
-            font-size: 12px;
+            color: var(--brand-dark);
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         td {
             padding: 16px;
-            border-top: 1.5px solid var(--dark);
-            font-weight: 600;
+            border-top: 1.5px solid var(--brand-dark);
+            font-weight: 700;
         }
 
         .status-badge {
             padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 800;
+            border-radius: 9999px; /* Pill Shape */
+            font-size: 10px;
+            font-weight: 900;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            border: 2px solid var(--dark);
-            box-shadow: 2px 2px 0px var(--dark);
+            border: 2px solid var(--brand-dark);
+            box-shadow: 2px 2px 0px var(--brand-dark);
             text-transform: uppercase;
         }
 
         .status-hadir {
-            background: rgba(52, 211, 153, 0.85);
-            color: var(--dark);
+            background: #d1fae5;
+            color: #065f46;
         }
 
         .status-belum {
-            background: rgba(253, 224, 71, 0.85);
-            color: var(--dark);
+            background: #fef3c7;
+            color: #92400e;
         }
 
         .ttd-preview {
             width: 50px;
             height: 30px;
-            border: 2.5px solid var(--dark);
-            border-radius: 8px;
+            border: 2px solid var(--brand-dark);
+            border-radius: 6px;
             object-fit: contain;
             background: white;
-            box-shadow: 2px 2px 0px var(--dark);
+            box-shadow: 1.5px 1.5px 0px var(--brand-dark);
         }
 
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            color: var(--dark);
+            color: var(--brand-gray);
             font-weight: 700;
         }
 
         .empty-state i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 15px;
             opacity: 0.8;
+            color: var(--brand-dark);
         }
 
         .loading {
@@ -428,7 +431,7 @@
             width: 40px;
             height: 40px;
             border: 3px solid #e2e8f0;
-            border-top-color: var(--primary);
+            border-top-color: var(--brand-orange);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto;
