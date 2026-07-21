@@ -632,21 +632,37 @@
         // Set tanggal hari ini sebagai default
         document.getElementById('datePicker').valueAsDate = new Date();
 
-        // Load daftar siswa dari template
+        // Load daftar siswa dari file Excel Absensi
         async function loadDaftarSiswa() {
             try {
-                const response = await fetch('assets/TemplateAbsensi.xlsx');
+                const response = await fetch('assets/Absensi.xlsx');
                 const arrayBuffer = await response.arrayBuffer();
                 const workbook = new ExcelJS.Workbook();
                 await workbook.xlsx.load(arrayBuffer);
-                const worksheet = workbook.getWorksheet(1);
+                
+                let worksheet = workbook.getWorksheet('JULI');
+                if (!worksheet) {
+                    worksheet = workbook.worksheets[workbook.worksheets.length - 1];
+                }
+
+                const getVal = (row, colIndex) => {
+                    const cell = row.getCell(colIndex);
+                    if (!cell || cell.value === null || cell.value === undefined) return '';
+                    if (typeof cell.value === 'object') {
+                        if (cell.value.result !== undefined) return String(cell.value.result).trim();
+                        if (cell.value.richText) return cell.value.richText.map(t => t.text).join('').trim();
+                        if (cell.value.text !== undefined) return String(cell.value.text).trim();
+                    }
+                    return String(cell.text || cell.value || '').trim();
+                };
 
                 daftarSiswa = [];
                 worksheet.eachRow((row, rowNumber) => {
-                    if (rowNumber >= 5) {
-                        const nama = row.getCell(2).text.trim();
-                        const kelas = row.getCell(3).text.trim();
-                        if (nama && kelas) {
+                    if (rowNumber >= 8) {
+                        const no = getVal(row, 1);
+                        const nama = getVal(row, 2);
+                        const kelas = getVal(row, 3);
+                        if (/^\d+$/.test(no) && nama !== "") {
                             daftarSiswa.push({ nama, kelas });
                         }
                     }
@@ -816,47 +832,102 @@
                 return;
             }
 
-            const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Monitoring Absensi');
+            try {
+                const response = await fetch('assets/Absensi.xlsx');
+                const arrayBuffer = await response.arrayBuffer();
+                const workbook = new ExcelJS.Workbook();
+                await workbook.xlsx.load(arrayBuffer);
 
-            // Header
-            worksheet.columns = [
-                { header: 'No', key: 'no', width: 8 },
-                { header: 'Nama Siswa', key: 'nama', width: 30 },
-                { header: 'Kelas', key: 'kelas', width: 15 },
-                { header: 'Status', key: 'status', width: 15 },
-                { header: 'Waktu Absen', key: 'waktu', width: 20 }
-            ];
+                let worksheet = workbook.getWorksheet('JULI');
+                if (!worksheet) {
+                    worksheet = workbook.worksheets[workbook.worksheets.length - 1];
+                }
 
-            // Styling header
-            worksheet.getRow(1).font = { bold: true };
-            worksheet.getRow(1).fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: 'FF4361EE' }
-            };
-            worksheet.getRow(1).font = { color: { argb: 'FFFFFFFF' }, bold: true };
-
-            // Data
-            allData.forEach(item => {
-                worksheet.addRow({
-                    no: item.no,
-                    nama: item.nama,
-                    kelas: item.kelas,
-                    status: item.hadir ? 'Hadir' : 'Belum Absen',
-                    waktu: item.waktu ? formatTime(item.waktu) : '-'
+                // Map data berdasarkan "nama-kelas" untuk dicari dengan cepat
+                const dataHadirMap = {};
+                allData.forEach(item => {
+                    if (item.hadir && item.ttd) {
+                        dataHadirMap[`${item.nama}-${item.kelas}`] = item.ttd;
+                    }
                 });
-            });
 
-            const buffer = await workbook.xlsx.writeBuffer();
-            const blob = new Blob([buffer], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Monitoring_Absen_${document.getElementById('datePicker').value}.xlsx`;
-            a.click();
+                const getVal = (row, colIndex) => {
+                    const cell = row.getCell(colIndex);
+                    if (!cell || cell.value === null || cell.value === undefined) return '';
+                    if (typeof cell.value === 'object') {
+                        if (cell.value.result !== undefined) return String(cell.value.result).trim();
+                        if (cell.value.richText) return cell.value.richText.map(t => t.text).join('').trim();
+                        if (cell.value.text !== undefined) return String(cell.value.text).trim();
+                    }
+                    return String(cell.text || cell.value || '').trim();
+                };
+
+                worksheet.eachRow((row, rowNumber) => {
+                    if (rowNumber >= 8) {
+                        const noStr = getVal(row, 1);
+                        const nama = getVal(row, 2);
+                        const kelas = getVal(row, 3);
+
+                        if (/^\d+$/.test(noStr) && nama !== "") {
+                            const no = parseInt(noStr, 10);
+                            const key = `${nama}-${kelas}`;
+                            const ttdBase64 = dataHadirMap[key];
+
+                            if (ttdBase64) {
+                                row.height = 30;
+
+                                const imageId = workbook.addImage({
+                                    base64: ttdBase64,
+                                    extension: 'png',
+                                });
+
+                                // Ganjil = Kolom D (4), Genap = Kolom E (5)
+                                const colTarget = (no % 2 !== 0) ? 4 : 5;
+                                const cell = row.getCell(colTarget);
+
+                                cell.value = {
+                                    richText: [
+                                        { text: no + '. ', font: { bold: true, size: 12 } },
+                                    ]
+                                };
+
+                                cell.alignment = {
+                                    vertical: 'middle',
+                                    horizontal: 'left',
+                                    indent: 1
+                                };
+
+                                worksheet.addImage(imageId, {
+                                    tl: {
+                                        col: colTarget - 0.3,
+                                        row: rowNumber - 0.9
+                                    },
+                                    ext: { width: 50, height: 30 },
+                                    editAs: 'oneCell'
+                                });
+
+                                // Bersihkan cell pasangannya
+                                const otherCol = (colTarget === 4) ? 5 : 4;
+                                row.getCell(otherCol).value = "";
+                            }
+                        }
+                    }
+                });
+
+                const tanggalSelected = document.getElementById('datePicker').value || 'Absensi';
+                const buffer = await workbook.xlsx.writeBuffer();
+                const blob = new Blob([buffer], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Absensi_ITClub_${tanggalSelected}.xlsx`;
+                a.click();
+            } catch (err) {
+                console.error("Gagal export dari template:", err);
+                alert("Gagal mengunduh file rekap absensi.");
+            }
         }
 
         // Inisialisasi

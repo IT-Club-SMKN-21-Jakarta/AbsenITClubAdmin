@@ -72,60 +72,75 @@ async function exportDataKeExcel() {
         dataFirebase[key] = d.ttd;
     });
 
-    // 2. Load Template Excel
-    const response = await fetch('assets/TemplateAbsensi.xlsx');
+    // 2. Load File Excel
+    const response = await fetch('assets/Absensi.xlsx');
     const arrayBuffer = await response.arrayBuffer();
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(arrayBuffer);
-    const worksheet = workbook.getWorksheet(1);
-    const today = new Date(tanggalInput).toLocaleDateString('id-ID');
-    worksheet.getCell('B3').value = today;
+    let worksheet = workbook.getWorksheet('JULI');
+    if (!worksheet) {
+        worksheet = workbook.worksheets[workbook.worksheets.length - 1];
+    }
+
+    const getVal = (row, colIndex) => {
+        const cell = row.getCell(colIndex);
+        if (!cell || cell.value === null || cell.value === undefined) return '';
+        if (typeof cell.value === 'object') {
+            if (cell.value.result !== undefined) return String(cell.value.result).trim();
+            if (cell.value.richText) return cell.value.richText.map(t => t.text).join('').trim();
+            if (cell.value.text !== undefined) return String(cell.value.text).trim();
+        }
+        return String(cell.text || cell.value || '').trim();
+    };
 
     worksheet.eachRow(async (row, rowNumber) => {
-        if (rowNumber >= 4) {
-            const no = row.getCell(1).value;
-            const nama = row.getCell(2).text.trim();
-            const kelas = row.getCell(3).text.trim();
+        if (rowNumber >= 8) {
+            const noStr = getVal(row, 1);
+            const nama = getVal(row, 2);
+            const kelas = getVal(row, 3);
 
-            const key = `${nama}-${kelas}`;
+            if (/^\d+$/.test(noStr) && nama !== "") {
+                const no = parseInt(noStr, 10);
+                const key = `${nama}-${kelas}`;
 
-            if (dataFirebase[key]) {
-                // Atur tinggi baris agar tidak terlalu sesak untuk ukuran 20x20
-                row.height = 30;
+                if (dataFirebase[key]) {
+                    // Atur tinggi baris agar tidak terlalu sesak untuk ukuran 20x20
+                    row.height = 30;
 
-                const base64Data = dataFirebase[key];
-                const imageId = workbook.addImage({
-                    base64: base64Data,
-                    extension: 'png',
-                });
+                    const base64Data = dataFirebase[key];
+                    const imageId = workbook.addImage({
+                        base64: base64Data,
+                        extension: 'png',
+                    });
 
-                const colTarget = (no % 2 !== 0) ? 4 : 5;
-                const cell = row.getCell(colTarget);
+                    const colTarget = (no % 2 !== 0) ? 4 : 5;
+                    const cell = row.getCell(colTarget);
 
-                cell.value = {
-                    richText: [
-                        { text: no + '. ', font: { bold: true, size: 12 } },
-                    ]
-                };
+                    cell.value = {
+                        richText: [
+                            { text: no + '. ', font: { bold: true, size: 12 } },
+                        ]
+                    };
 
-                cell.alignment = {
-                    vertical: 'middle',
-                    horizontal: 'left', // Rata kiri sesuai permintaan
-                    indent: 1 // Memberi sedikit ruang agar tidak nempel garis cell
-                };
+                    cell.alignment = {
+                        vertical: 'middle',
+                        horizontal: 'left', // Rata kiri sesuai permintaan
+                        indent: 1 // Memberi sedikit ruang agar tidak nempel garis cell
+                    };
 
-                worksheet.addImage(imageId, {
-                    tl: {
-                        col: colTarget - 0.3,
-                        row: rowNumber - 0.9
-                    },
-                    ext: { width: 50, height: 30 },
-                    editAs: 'oneCell'
-                });
+                    worksheet.addImage(imageId, {
+                        tl: {
+                            col: colTarget - 0.3,
+                            row: rowNumber - 0.9
+                        },
+                        ext: { width: 50, height: 30 },
+                        editAs: 'oneCell'
+                    });
 
-                // Bersihkan kolom zig-zag pasangannya
-                const otherCol = (colTarget === 4) ? 5 : 4;
-                row.getCell(otherCol).value = "";
+                    // Bersihkan kolom zig-zag pasangannya
+                    const otherCol = (colTarget === 4) ? 5 : 4;
+                    row.getCell(otherCol).value = "";
+                }
             }
         }
     });
